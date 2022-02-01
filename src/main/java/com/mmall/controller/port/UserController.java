@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
@@ -33,6 +34,7 @@ public class UserController {
      * @Return
      */
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
+    @ResponseBody
     public ServerResponse<User> login(String username, String password, HttpSession session) {
         ServerResponse<User> login = iUserService.login(username, password);
         if (login.isSuccess()) {
@@ -48,8 +50,22 @@ public class UserController {
      */
 
     @RequestMapping(value = "logout.do", method = RequestMethod.GET)
+    @ResponseBody
     public ServerResponse<User> logout(HttpSession session) {
         session.removeAttribute(Const.CURRENT_USER);
         return ServerResponse.createBySuccess();
+    }
+
+    //注册
+    @RequestMapping(value = "register.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> register(User user){
+        return iUserService.register(user);
+    }
+    //实时校验功能的开发
+    @RequestMapping(value = "check_valid.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> checkValid(String str,String type){
+        return iUserService.checkValid(str,type);
     }
 }

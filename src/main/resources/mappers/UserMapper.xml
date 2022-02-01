@@ -38,6 +38,11 @@
         from mall_user
         where username=#{username} and password=#{password}
     </select>
+    <select id="checkEmail" resultType="java.lang.Integer" parameterType="string">
+        select count(1)
+        from mall_user
+        where email = #{email}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from mmall_user

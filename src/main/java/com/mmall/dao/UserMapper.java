@@ -20,4 +20,6 @@ public interface UserMapper {
     int checkUserName(String username);
     //login method
     User selectLogin(@Param("username") String username, @Param("password") String password );
+
+    int checkEmail(String email);
 }
