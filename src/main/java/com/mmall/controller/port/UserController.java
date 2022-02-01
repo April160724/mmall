@@ -68,4 +68,17 @@ public class UserController {
     public ServerResponse<String> checkValid(String str,String type){
         return iUserService.checkValid(str,type);
     }
+
+
+    //获取当前用户登录的信息
+    @RequestMapping(value = "get_user_info.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<User> getUserInfo(HttpSession session){
+        //根据当前的
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user!=null){
+            return ServerResponse.createBySuccess(user);
+        }
+        return ServerResponse.createByErrorMessage("当前用户未登录,无法获取当前信息");
+    }
 }
