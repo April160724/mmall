@@ -48,8 +48,8 @@ public class UserServiceImpl implements IUserService {
         if (resultCount > 0) {
             return ServerResponse.createByErrorMessage("用户名已存在");
         }*/
-        ServerResponse vaildResponse = this.checkValid(user.getUsername(),Const.USERNAME);
-        if (!vaildResponse.isSuccess()){
+        ServerResponse vaildResponse = this.checkValid(user.getUsername(), Const.USERNAME);
+        if (!vaildResponse.isSuccess()) {
             return vaildResponse;
         }
         //检查Email是否存在
@@ -88,5 +88,19 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMessage("参数错误");
         }
         return ServerResponse.createBySuccess("校验成功");
+    }
+
+    //根据用户名去查找密保问题
+    public ServerResponse selectQuestion(String username) {
+        ServerResponse validResponse = this.checkValid(username, Const.USERNAME);
+        if (validResponse.isSuccess()) {
+            //用户不存在
+            return ServerResponse.createByErrorMessage("用户不存在");
+        }
+        String question = userMapper.selectQuestionByUserName(username);
+        if (StringUtils.isNotBlank(question)) {
+            return ServerResponse.createBySuccess(question);
+        }
+        return ServerResponse.createByErrorMessage("找回密码的问题是空的");
     }
 }

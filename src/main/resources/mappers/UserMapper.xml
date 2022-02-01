@@ -43,6 +43,12 @@
         from mall_user
         where email = #{email}
     </select>
+    <!--忘记密码的查询-->
+    <select id="selectQuestionByUserName" resultMap="string" parameterType="string">
+        select question
+        from mmall_user
+        where username = #{username}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from mmall_user
