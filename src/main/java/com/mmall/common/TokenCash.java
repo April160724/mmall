@@ -23,7 +23,7 @@ public class TokenCash {
             .expireAfterAccess(12, TimeUnit.HOURS)
             .build(new CacheLoader<String, String>() {
                 @Override
-                public Object load(String o) throws Exception {
+                public String load(String o) throws Exception {
                     return "null";
                 }
             });

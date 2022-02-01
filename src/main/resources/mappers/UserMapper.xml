@@ -44,10 +44,17 @@
         where email = #{email}
     </select>
     <!--忘记密码的查询-->
-    <select id="selectQuestionByUserName" resultMap="string" parameterType="string">
+    <select id="selectQuestionByUserName" resultMap="string" parameterType="string" resultType="java.lang.String">
         select question
         from mmall_user
         where username = #{username}
+    </select>
+    <select id="checkAnswer" resultType="java.lang.Integer" parameterType="map">
+        select count(1)
+        from mmall_user
+        where username = #{username}
+          and question = #{question}
+          and answer = #{answer}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete

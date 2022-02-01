@@ -2,6 +2,7 @@ package com.mmall.service.impl;
 
 import com.mmall.common.ServerResponse;
 import com.mmall.common.Const;
+import com.mmall.common.TokenCash;
 import com.mmall.dao.UserMapper;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
@@ -9,6 +10,8 @@ import com.mmall.util.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 /**
  * @Author: July
@@ -102,5 +105,17 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createBySuccess(question);
         }
         return ServerResponse.createByErrorMessage("找回密码的问题是空的");
+    }
+
+    public ServerResponse<String> checkAnswer(String username, String question, String answer) {
+        int resultCount = userMapper.checkAnswer(username, question, answer);
+        if (resultCount > 0) {
+            //说明回答的问题是对的额
+            String forgetToken = UUID.randomUUID().toString();
+            //本地的缓存就把token放进去了
+            TokenCash.setKey("token_" + username, forgetToken);
+            return ServerResponse.createBySuccess(forgetToken);
+        }
+        return ServerResponse.createByErrorMessage("问题的答案错误");
     }
 }
