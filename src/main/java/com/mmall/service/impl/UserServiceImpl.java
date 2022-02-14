@@ -153,4 +153,20 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByErrorMessage("修改密码失败");
     }
 
+
+    public ServerResponse<String> restPaasowrd(String passwordOld, String passwordNew,User user) {
+        //防止横向越权，校验所属密码的所属用户是否对应
+        int resultCount=userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordOld),user.getId());
+        if (resultCount==0){
+            return ServerResponse.createByErrorMessage("旧密码错误");
+        }
+        String md5Password = MD5Util.MD5EncodeUtf8(passwordNew);
+        user.setPassword(md5Password);
+        int rowCount = userMapper.updateByPrimaryKeySelective(user);
+        if (rowCount > 0) {
+            return ServerResponse.createBySuccessMessage("修改密码成功");
+        }
+        return ServerResponse.createByErrorMessage("修改密码失败");
+    }
+
 }

@@ -101,7 +101,18 @@ public class UserController {
     @RequestMapping(value = "forget_reset_password.do", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse<String> forgetRestPassword(
-            String username,String passwordNew,String forgetToken){
-        return iUserService.forgetRestPassword(username,passwordNew,forgetToken);
+            String username, String passwordNew, String forgetToken) {
+        return iUserService.forgetRestPassword(username, passwordNew, forgetToken);
+    }
+
+    //登录状态下的密码修改
+    @RequestMapping(value = "reset_password.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> restPassword(HttpSession session, String passwordOld, String passwordNew) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        return iUserService.restPaasowrd(passwordOld, passwordNew, user);
     }
 }
