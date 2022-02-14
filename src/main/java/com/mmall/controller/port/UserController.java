@@ -59,24 +59,25 @@ public class UserController {
     //注册
     @RequestMapping(value = "register.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<String> register(User user){
+    public ServerResponse<String> register(User user) {
         return iUserService.register(user);
     }
+
     //实时校验功能的开发
     @RequestMapping(value = "check_valid.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<String> checkValid(String str,String type){
-        return iUserService.checkValid(str,type);
+    public ServerResponse<String> checkValid(String str, String type) {
+        return iUserService.checkValid(str, type);
     }
 
 
     //获取当前用户登录的信息
     @RequestMapping(value = "get_user_info.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<User> getUserInfo(HttpSession session){
+    public ServerResponse<User> getUserInfo(HttpSession session) {
         //根据当前的
         User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user!=null){
+        if (user != null) {
             return ServerResponse.createBySuccess(user);
         }
         return ServerResponse.createByErrorMessage("当前用户未登录,无法获取当前信息");
@@ -85,16 +86,22 @@ public class UserController {
     //忘记密码
     @RequestMapping(value = "forget_get_question.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<String > forgetGetQuestion(String username){
+    public ServerResponse<String> forgetGetQuestion(String username) {
         return iUserService.selectQuestion(username);
     }
 
     //验证答案
     @RequestMapping(value = "forget_check_answer.do", method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponse<String > forgetCheckAnswer(
-            String username, String question, String answer){
-        return iUserService.checkAnswer(username,question,answer);
+    public ServerResponse<String> forgetCheckAnswer(
+            String username, String question, String answer) {
+        return iUserService.checkAnswer(username, question, answer);
+    }
 
+    @RequestMapping(value = "forget_reset_password.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<String> forgetRestPassword(
+            String username,String passwordNew,String forgetToken){
+        return iUserService.forgetRestPassword(username,passwordNew,forgetToken);
     }
 }

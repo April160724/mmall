@@ -17,7 +17,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class TokenCash {
     private static Logger logger= (Logger) LoggerFactory.getLogger(TokenCash.class);
-
+    //将token的前缀置为常量
+    public static final String TOKEN_PREFIX="token_";
     private static LoadingCache<String, String> localCache= CacheBuilder.
             newBuilder().initialCapacity(1000).maximumSize(10000)
             .expireAfterAccess(12, TimeUnit.HOURS)
