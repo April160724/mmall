@@ -113,6 +113,24 @@ public class UserController {
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录");
         }
-        return iUserService.restPaasowrd(passwordOld, passwordNew, user);
+        return iUserService.restPassowrd(passwordOld, passwordNew, user);
+    }
+
+    @RequestMapping(value = "update_information.do", method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponse<User> update_information(HttpSession session, User user) {
+        //在获取用户之前，先判断当前用户是否登录
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if (currentUser == null) {
+            return ServerResponse.createByErrorMessage("用户未登录");
+        }
+        user.setId(currentUser.getId());
+        //防止越权
+        user.setUsername(user.getUsername());
+        ServerResponse<User> response = iUserService.upodatinformation(user);
+        if (response.isSuccess()) {
+            session.setAttribute(Const.CURRENT_USER, response.getData());
+        }
+        return response;
     }
 }
