@@ -8,6 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * @Author: July
  * @Description:
@@ -32,5 +34,20 @@ public class CategoryServiceImpl implements ICategoryService {
             return ServerResponse.createBySuccessMessage("添加品类成功");
         }
         return ServerResponse.createByErrorMessage("添加品类失败");
+    }
+
+    public ServerResponse updateCategoryName(
+            String categoryName, Integer categoryId) {
+        if (categoryId == null && StringUtils.isBlank(categoryName)) {
+            return ServerResponse.createByErrorMessage("参数错误");
+        }
+        Category category = new Category();
+        category.setId(categoryId);
+        category.setName(categoryName);
+        int rowCount = categoryMapper.updateByPrimaryKeySelective(category);
+        if (rowCount > 0) {
+            return ServerResponse.createBySuccessMessage("更新品类名成功");
+        }
+        return ServerResponse.createByErrorMessage("更新失败");
     }
 }

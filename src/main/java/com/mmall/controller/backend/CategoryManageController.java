@@ -31,8 +31,8 @@ public class CategoryManageController {
     @RequestMapping("add_category.do")
     @ResponseBody//自动使用jsckson序列化
     public ServerResponse addCategory(HttpSession session,
-                            String categoryName,
-                            @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
+                                      String categoryName,
+                                      @RequestParam(value = "parentId", defaultValue = "0") int parentId) {
         //判断是否登录
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
@@ -49,5 +49,24 @@ public class CategoryManageController {
         }
     }
 
+    @RequestMapping("set_category_name.do")
+    @ResponseBody//自动使用jsckson序列化
+    public ServerResponse setCategoryName(HttpSession session,
+                                          String categoryName, Integer categoryId) {
+        //判断是否登录
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(),
+                    "用户未登录");
+        }
+        //校验一下是否是管理员
+        if (iUserService.checkAdmin(user).isSuccess()) {
+            //yes
+            //更新我们的品类名
+            return iCategoryService.updateCategoryName(categoryName, categoryId);
+        } else {
+            return ServerResponse.createByErrorMessage("无管理员权限操作，需要管理员权限");
+        }
+    }
 
 }
