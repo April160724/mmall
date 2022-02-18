@@ -12,4 +12,6 @@ import com.mmall.pojo.Product;
 public interface IProductService {
 
     ServerResponse addProduct(Product product);
+
+    ServerResponse<String> setSaleStatus(Integer productId, Integer status);
 }
