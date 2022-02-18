@@ -1,6 +1,9 @@
 package com.mmall.service;
 
 import com.mmall.common.ServerResponse;
+import com.mmall.pojo.Category;
+
+import java.util.List;
 
 /**
  * @Author: July
@@ -13,4 +16,7 @@ public interface ICategoryService {
 
     public ServerResponse updateCategoryName(
             String categoryName, Integer categoryId);
+
+    public ServerResponse<List<Category>> getchildrenCategory(Integer categoryId);
+    public ServerResponse selectCategoryAndChildreById(Integer categoryId);
 }
