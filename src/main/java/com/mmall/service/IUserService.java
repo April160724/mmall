@@ -24,7 +24,9 @@ public interface IUserService {
     ServerResponse<String> forgetRestPassword(
             String username, String passwordNew, String forgetToken);
 
-    ServerResponse<String> restPassowrd(String passwordOld, String passwordNew, User user);
+    ServerResponse<String> restPassword(String passwordOld, String passwordNew, User user);
     ServerResponse<User> upodatinformation(User user);
     ServerResponse<User> getInformation(Integer userId);
+
+    public ServerResponse checkAdmin(User user);
 }

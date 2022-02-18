@@ -114,7 +114,7 @@ public class UserController {
         if (user == null) {
             return ServerResponse.createByErrorMessage("用户未登录");
         }
-        return iUserService.restPassowrd(passwordOld, passwordNew, user);
+        return iUserService.restPassword(passwordOld, passwordNew, user);
     }
 
     @RequestMapping(value = "update_information.do", method = RequestMethod.POST)
