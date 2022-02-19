@@ -27,11 +27,26 @@
         from mmall_product
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <select id="selectList" resultMap="com.mmall.dao.CartMapper.BaseResultMap">
+    <select id="selectList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from mmall_product
         order by asc
+    </select>
+    <select id="selectProductByNameAndId" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from mmall_product
+        <where>
+            <if test="productName !=null">
+                and name like #{productName}
+            </if>
+            <if test="productId != null">
+                and id =#{productId}
+            </if>
+        </where>
+
+
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
