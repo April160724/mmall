@@ -5,6 +5,8 @@ import com.mmall.common.ServerResponse;
 import com.mmall.pojo.Product;
 import com.mmall.vo.ProductDetailVo;
 
+import java.util.List;
+
 /**
  * @Author: July
  * @Description:
@@ -25,4 +27,7 @@ public interface IProductService {
                                             int pageNum, int pageSize);
 
     ServerResponse<ProductDetailVo> getProductDetail(Integer productId);
+
+    ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId,
+                                                         int pageNum, int pageSize, String orderBy);
 }

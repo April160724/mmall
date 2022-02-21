@@ -18,5 +18,6 @@ public interface ICategoryService {
             String categoryName, Integer categoryId);
 
     public ServerResponse<List<Category>> getchildrenCategory(Integer categoryId);
-    public ServerResponse selectCategoryAndChildreById(Integer categoryId);
+
+    public ServerResponse<List<Integer>> selectCategoryAndChildreById(Integer categoryId);
 }
