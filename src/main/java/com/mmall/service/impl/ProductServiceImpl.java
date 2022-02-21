@@ -3,6 +3,7 @@ package com.mmall.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServerResponse;
 import com.mmall.dao.CategoryMapper;
@@ -156,13 +157,13 @@ public class ProductServiceImpl implements IProductService {
     }
 
 
-    public ServerResponse<PageInfo> searchProducts(String productName,Integer productId,
-                                                   int pageNum,int pageSize){
-        PageHelper.startPage(pageNum,pageSize);//分页
-        if (StringUtils.isNotBlank(productName)){
-            productName=new StringBuilder().append("%").append(productName).append("%").toString();
+    public ServerResponse<PageInfo> searchProducts(String productName, Integer productId,
+                                                   int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);//分页
+        if (StringUtils.isNotBlank(productName)) {
+            productName = new StringBuilder().append("%").append(productName).append("%").toString();
         }
-        List<Product> productList=productMapper.selectProductByNameAndId(productName,productId);
+        List<Product> productList = productMapper.selectProductByNameAndId(productName, productId);
         List<ProductListVo> productListVoList = Lists.newArrayList();
         for (Product productItem : productList) {
             ProductListVo productListVo = assembleProductListVo(productItem);
@@ -173,5 +174,21 @@ public class ProductServiceImpl implements IProductService {
         pageResult.setList(productListVoList);
         return ServerResponse.createBySuccess(pageResult);
 
+    }
+
+    //前台的商品查询
+    public ServerResponse<ProductDetailVo> getProductDetail(Integer productId) {
+        if (productId == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        Product product = productMapper.selectByPrimaryKey(productId);
+        if (product == null) {
+            return ServerResponse.createByErrorMessage("商品不存在");
+        }
+        if (product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode()) {
+            return ServerResponse.createByErrorMessage("商品不存在");
+        }
+        ProductDetailVo productDetailVo = assembleProductDetailVo(product);
+        return ServerResponse.createBySuccess(productDetailVo);
     }
 }
