@@ -28,6 +28,15 @@
         from mmall_cart
         where id = #{id,jdbcType=INTEGER}
     </delete>
+    <delete id="deleteByProductList" parameterType="map">
+        delete from mmall_cart where user_id=#{userId}
+        <if test="productId !=null">
+            and product_Id in
+            <foreach collection="productId" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
     <insert id="insert" parameterType="com.mmall.pojo.Cart">
         insert into mmall_cart (id, user_id, product_id,
                                 quantity, checked, create_time,

@@ -1,5 +1,6 @@
 package com.mmall.service.impl;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
@@ -76,6 +77,29 @@ public class CartServiceImpl implements ICartService {
             return ServerResponse.createBySuccess(cartVoLimit);
         }
         return ServerResponse.createByErrorMessage("更新购物车失败");
+
+    }
+
+    @Override
+    public ServerResponse<CartVo> deleteProduct(Integer userId, String productIds) {
+
+        //guawa的split方法
+        List<String> productList = Splitter.on(",").splitToList(productIds);
+        if (productList.isEmpty()) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        int rowCount = cartMapper.deleteByProductList(userId, productList);
+        if (rowCount >= 0) {
+            CartVo cartVoLimit = this.getCartVoLimit(userId);
+            return ServerResponse.createBySuccess(cartVoLimit);
+        }
+        return ServerResponse.createByErrorMessage("删产品失败");
+    }
+
+    @Override
+    public ServerResponse<CartVo> selectCartProduct(Integer userId) {
+        CartVo cartVoLimit = this.getCartVoLimit(userId);
+        return ServerResponse.createBySuccess(cartVoLimit);
 
     }
 
