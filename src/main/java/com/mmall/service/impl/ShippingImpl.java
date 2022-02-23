@@ -1,5 +1,7 @@
 package com.mmall.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mmall.common.ServerResponse;
 import com.mmall.dao.ShippingMapper;
 
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,5 +56,22 @@ public class ShippingImpl implements IShippingService {
             return ServerResponse.createBySuccess("修改地址成功");
         }
         return ServerResponse.createByErrorMessage("修改地址失败");
+    }
+
+    @Override
+    public ServerResponse<Shipping> select(Integer id, Integer shippingId) {
+        Shipping shipping = shippingMapper.selectByShippingIdAndUserId(id, shippingId);
+        if (shipping == null) {
+            return ServerResponse.createByErrorMessage("无法查询到结果");
+        }
+        return ServerResponse.createBySuccess("查询地址成功", shipping);
+    }
+
+    @Override
+    public ServerResponse<PageInfo> list(Integer id, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Shipping> shippings = shippingMapper.selectByUserId(id);
+        PageInfo pageInfo=new PageInfo(shippings);
+        return ServerResponse.createBySuccess(pageInfo);
     }
 }

@@ -27,6 +27,7 @@
         from mmall_shipping
         where id = #{id,jdbcType=INTEGER}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
         from mmall_shipping
@@ -199,4 +200,16 @@
             /*防止越权，添加的一条*/
           and user_id = #{userId,jdbcType=INTEGER}
     </update>
+
+    <select id="selectByShippingIdAndUserId" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"></include>
+        from mmall_shipping where id=#{shippingId}
+        and user_Id=#{userId}
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"></include>
+        from mmall_shipping where user_id=#{userId}
+    </select>
 </mapper>
