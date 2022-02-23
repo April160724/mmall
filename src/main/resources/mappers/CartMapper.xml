@@ -128,6 +128,15 @@
             update_time = now()
         where id = #{id,jdbcType=INTEGER}
     </update>
+    <update id="checkedOrUncheckedProduct" parameterType="map">
+        update mmall_cart
+        set checked=#{checked},
+        update_time=now()
+        where user_Id = #{userId}
+        <if test="productId!=null">
+            and product_Id=#{productId}
+        </if>
+    </update>
 
 
     <select id="selectCartByUserIdProductId" resultMap="BaseResultMap" parameterType="map">
@@ -145,5 +154,10 @@
         from mmall_cart
         where checked = 0
           and user_id = #{userId}
+    </select>
+    <select id="selectCartProductCount" resultType="java.lang.Integer">
+        select sum(quantity) as count
+        from mmall_cart
+        where user_id = #{userId}
     </select>
 </mapper>

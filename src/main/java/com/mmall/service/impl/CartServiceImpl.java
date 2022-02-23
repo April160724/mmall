@@ -103,6 +103,20 @@ public class CartServiceImpl implements ICartService {
 
     }
 
+    //通用的选择的方法
+    public ServerResponse<CartVo> selectOrUnSelect(Integer userId, Integer productId, Integer checked) {
+        cartMapper.checkedOrUncheckedProduct(userId, productId, checked);
+        return this.selectCartProduct(userId);
+    }
+
+    @Override
+    public ServerResponse<Integer> getCartProductCount(Integer userId) {
+        if (userId == null) {
+            return ServerResponse.createBySuccess(0);
+        }
+        return ServerResponse.createBySuccess(cartMapper.selectCartProductCount(userId));
+    }
+
 
     //非常重要的一个购物车的计算
     private CartVo getCartVoLimit(Integer userId) {
