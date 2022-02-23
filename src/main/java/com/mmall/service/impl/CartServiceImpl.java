@@ -60,6 +60,26 @@ public class CartServiceImpl implements ICartService {
 
     }
 
+    @Override
+    public ServerResponse<CartVo> update(Integer id, Integer productId, Integer count) {
+        //校验
+        if (productId == null || count == null) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+        }
+        Cart cart = cartMapper.selectCartByUserIdProductId(id, productId);
+        if (cart != null) {
+            cart.setQuantity(count);
+        }
+        int i = cartMapper.updateByPrimaryKeySelective(cart);
+        if (i >= 0) {
+            CartVo cartVoLimit = this.getCartVoLimit(id);
+            return ServerResponse.createBySuccess(cartVoLimit);
+        }
+        return ServerResponse.createByErrorMessage("更新购物车失败");
+
+    }
+
+
     //非常重要的一个购物车的计算
     private CartVo getCartVoLimit(Integer userId) {
         CartVo cartVo = new CartVo();
